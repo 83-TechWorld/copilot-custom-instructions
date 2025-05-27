@@ -47,4 +47,4 @@ Prefer keyboard-navigable components (e.g., buttons over div clicks).
 Use predefined components from reactstrap (e.g., Card, FormGroup, Button) for layout and UI.
 Use components from crl-components (our organization’s library), such as:
 <Autocomplete /> for predictive dropdowns.
-<CrlButton />, <CrlModal />, etc., if available. 
+<CrlButton />, <CrlModal />, etc., if available.
