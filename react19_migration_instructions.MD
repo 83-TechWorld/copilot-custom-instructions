@@ -479,6 +479,39 @@ This document outlines the strategy for migrating our React 18 project to React 
 
 ---
 
+## **Core Testing Stack & Setup**
+
+* **Testing Frameworks:** Utilize **React Testing Library** for rendering and interacting with components, and **Jest** for assertions and test runner functionalities.
+* **Store Management:**
+    * For **Easy Peasy** stores, always mock them using `jest.mock()` or by providing a mocked store instance to `StoreProvider` in your test setup.
+    * Ensure all necessary store actions and selectors are mocked to control test scenarios effectively.
+* **Custom Hooks:** When testing custom hooks, use **`@testing-library/react-hooks`'s `renderHook()`** utility. If the hook depends on context, provide the necessary `wrapper` option to `renderHook()`.
+* **Service & External Dependencies:** Use `jest.mock()` to simulate responses from API services or other external dependencies. This ensures tests are isolated and deterministic.
+
+---
+
+## **Test Structure & Patterns**
+
+* **AAA Pattern:** Strict adherence to the **Arrange-Act-Assert (AAA)** pattern is mandatory for all test cases.
+    * **Arrange:** Set up the test environment, mock dependencies, and render the component/hook.
+    * **Act:** Simulate user interactions or trigger the behavior being tested.
+    * **Assert:** Verify the expected outcome using Jest matchers and React Testing Library queries.
+* **Edge Cases:** Always annotate and explicitly test for common edge cases, such as:
+    * Empty states (e.g., empty lists, no data).
+    * Error states (e.g., API failures, invalid input).
+    * Loading states.
+    * Boundary conditions (e.g., minimum/maximum values).
+
+---
+
+## **Component Rendering & Interaction**
+
+* **Reusable TestWrapper:** Always wrap components with all required providers (e.g., `StoreProvider`, `Router`, `ThemeProvider`, `QueryClientProvider` if applicable) within a reusable **`TestWrapper`** utility. This promotes consistency and reduces boilerplate.
+    * **Copilot Action:** If a component requires providers, suggest importing and using the `TestWrapper` from our common test utilities.
+* **User Interactions:** Prefer **`@testing-library/user-event` (`userEvent`)** over `fireEvent` to simulate user interactions. `userEvent` dispatches more realistic events that more closely resemble actual browser behavior.
+* **Asynchronous Assertions:** For assertions that depend on asynchronous state updates, network requests, or effects, always use **`waitFor()`** or `findBy*` queries (which implicitly use `waitFor`). Avoid arbitrary `setTimeout` calls.
+
+
 ## **General Guidelines for Copilot**
 
 * **Prioritize Safety:** If a refactoring suggestion seems risky or might break existing functionality, suggest it as an alternative and explain the potential implications.
